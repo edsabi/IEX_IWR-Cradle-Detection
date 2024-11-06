@@ -1,5 +1,4 @@
-Powershell cradles are a combination of a web-request command and an execution command. They are used in multiple malicious files and have been known to bypass EDR solutions and custom detections will need to be
-created on top of an EDR solution. 
+Powershell cradles are a combination of a web-request command and an execution command. They are used in multiple malicious files and have been known to bypass EDR solutions and custom detections will need to be created on top of an EDR solution. 
 
 Example
 
